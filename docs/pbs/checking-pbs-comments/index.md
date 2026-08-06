@@ -48,7 +48,7 @@ line to tell which.
   written, no matter how long you wait. This means your script has a
   problem you need to fix.
 
-### `comment = Not Running: Insufficient amount of resource: Qlist`
+#### `comment = Not Running: Insufficient amount of resource: Qlist`
 This usually means you submitted directly to an **execution queue** instead
 of a **routing queue**. Submit to the appropriate routing queue and let PBS
 route it — don't target the execution queue directly.
@@ -128,7 +128,7 @@ starting a new one.
 
 ## Category 2: My Job Starts, Then Dies Immediately
 
-### `comment = job held, too many failed attempts to run`
+#### `comment = job held, too many failed attempts to run`
 Example:
 ```
 run_count = 21
