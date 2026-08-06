@@ -53,13 +53,13 @@ This usually means you submitted directly to an **execution queue** instead
 of a **routing queue**. Submit to the appropriate routing queue and let PBS
 route it — don't target the execution queue directly.
 
-### `comment = Not Running: Insufficient amount of resource: ncpus`
+#### `comment = Not Running: Insufficient amount of resource: ncpus`
 Not enough free CPUs cluster-wide (or in the queue you targeted) at this
 moment to satisfy your `select` statement. This is transient — the job will
 start once cores free up. If it persists unusually long, double check you
 haven't requested more cores than the queue's per-job maximum.
 
-### `comment = Not Running: Insufficient amount of resource: mem`
+#### `comment = Not Running: Insufficient amount of resource: mem`
 Example:
 ```
 Resource_List.select = 8:ncpus=128:mpiprocs=128:mem=240GB:ompthreads=1
@@ -71,7 +71,7 @@ default 235GB/128-core ratio provides, you must *under-subscribe* the node
 (request fewer `ncpus` than physically exist per node) to raise your
 effective memory-per-core.
 
-### `comment = Not Running: Insufficient amount of resource: ngpus (R: 4 A: 3 T: 328)`
+#### `comment = Not Running: Insufficient amount of resource: ngpus (R: 4 A: 3 T: 328)`
 Read this literally: **R**equested / **A**vailable / **T**otal.
 Example: `R: 4 A: 3 T: 328` means you asked for 4 GPUs, only 3 are free
 cluster-wide right now, out of 328 total GPUs on the system.
@@ -82,7 +82,7 @@ GPUs across *different* nodes don't help — you specifically need a whole
 4-GPU node free at once. This is not a problem with your job; it's just
 waiting for a full node to open up.
 
-### `comment = Not Running: Insufficient amount of resource: vnode` (Casper)
+#### `comment = Not Running: Insufficient amount of resource: vnode` (Casper)
 Example:
 ```
 Resource_List.select = 1:ncpus=1:mem=4GB:vnode=casper44:ompthreads=1
@@ -92,7 +92,7 @@ node isn't free. Unlike generic resource requests, pinning to one vnode means
 you're waiting on that exact machine — no other node will satisfy it, even
 if idle.
 
-### `comment = Can Never Run: No Select`
+#### `comment = Can Never Run: No Select`
 Your `select` line has a syntax problem. Common cause: **uppercase resource
 names are not allowed.** For example, this will never run:
 ```
@@ -100,17 +100,17 @@ Resource_List.select = 1:NCPUS=64:MPIPROCS=64:mem=235gb:ompthreads=1
 ```
 Fix: use lowercase resource keywords (`ncpus`, `mpiprocs`, `mem`, `ompthreads`).
 
-### `Not Running: Job is requesting an exclusive node and node is in use`
+#### `Not Running: Job is requesting an exclusive node and node is in use`
 You asked for exclusive access to a node, but it's currently occupied by
 another job. Transient — wait, or reconsider whether exclusive access is
 necessary.
 
-### `Not Running: Job would conflict with reservation or top job`
+#### `Not Running: Job would conflict with reservation or top job`
 The scheduler has a standing reservation (or a high-priority "top job") that
 your job's resource request would interfere with. Transient; will clear once
 the reservation/top job passes.
 
-### `Not Running: Not enough free nodes available`
+#### `Not Running: Not enough free nodes available`
 Example:
 ```
 Resource_List.select = 200:ncpus=128:mpiprocs=32:ompthreads=4
@@ -119,7 +119,7 @@ Resource_List.walltime = 12:00:00
 Large node-count requests (here, 200 whole nodes) simply take longer to find
 an opening for. This is normal queueing behavior for big jobs, not an error.
 
-### `Not Running: User has reached queue jhublogin running job limit` (Casper)
+#### `Not Running: User has reached queue jhublogin running job limit` (Casper)
 You already have a JupyterHub session (or sessions) occupying your allowed
 slot(s) on the `jhublogin` queue. Close/stop an existing session before
 starting a new one.
@@ -210,5 +210,3 @@ If the above doesn't reveal the cause:
 
 ---
 
-*Source material: Derecho/Casper PBS comment examples and
-[NCAR HPC Docs: Moving from Cheyenne to Derecho](https://ncar-hpc-docs.readthedocs.io/en/latest/compute-systems/derecho/moving-from-cheyenne/)*
